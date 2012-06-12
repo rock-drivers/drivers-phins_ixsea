@@ -1,10 +1,10 @@
 #include <iostream>
-#include <phins_ixsea/Dummy.hpp>
+#include <phins_ixsea/Driver.hpp>
 
 int main(int argc, char** argv)
 {
-	dummy_project::DummyClass dummyClass;
-	dummyClass.welcome();
+	phins_ixsea::Driver driver;
+	driver.welcome();
 
 	return 0;
 }
