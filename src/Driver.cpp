@@ -15,7 +15,7 @@ Driver::Driver()
     : iodrivers_base::Driver(8192),
       mParser(0)
 {
-
+    mParser = Parser::createParser(Parser::PhinsStandard);
 }
 
 int Driver::extractPacket (uint8_t const *buffer, size_t buffer_size) const

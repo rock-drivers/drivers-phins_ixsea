@@ -36,6 +36,20 @@ NmeaParser::NmeaParser()
 
 int NmeaParser::extractPacket (uint8_t const *buffer, size_t buffer_size) const
 {
+    if (buffer[0] == '$') {
+        for (size_t i = 0; i < buffer_size; i++) {
+            if (buffer[i] == '\n') {
+                return i + 1;
+            }
+        }
+        return 0;
+    } else {
+        for (size_t i = 0; i < buffer_size; i++) {
+            if (buffer[i] == '$') {
+                return -i;
+            }
+        }
+    }
     return -buffer_size;
 }
 
