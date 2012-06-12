@@ -1,0 +1,18 @@
+<package>
+  <description brief="Phins driver">
+  This package contains a library for dealing with the IXSEA Photonic Inertial Navigation System. It also contains a raw driver for unprocessed data transfer.
+  </description>
+  <author>Jens Renken/renken@marum.de</author>
+  <license></license>
+  <url>http://www.marum.de</url>
+  <logo>http://</logo>
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+  <depend package="base/types" />
+  <depend package="driver/iodrivers_base" />
+</package>
