@@ -1,23 +1,3 @@
-/*
- * main.cpp
- *
- *  Created on: 12.06.2012
- *      Author: jrenken
- */
-
-
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <utility>
-
-
-#include "phins_ixsea/Driver.hpp"
-
-
-
-using namespace phins_ixsea;
-
 int main(int argc, char** argv)
 {
 
