@@ -29,6 +29,12 @@ NmeaRecord::NmeaRecord(std::string s)
 	setRecord(s);
 }
 
+NmeaRecord::NmeaRecord(const char *buffer, size_t size)
+{
+    setRecord(std::string((const char*)buffer, size));
+}
+
+
 
 /**@brief splits coma sperated nmea string and puts each word in array of strings
  * @TODO Error
@@ -38,7 +44,6 @@ NmeaRecord::NmeaRecord(std::string s)
 int NmeaRecord::setRecord(std::string rec )
 {
 	mFields.clear();
-
 	try {
         boost::trim(rec);
         if (rec.at(0) == '$') {
@@ -46,7 +51,6 @@ int NmeaRecord::setRecord(std::string rec )
             int idx = rec.find('*');
             if (idx >= 0) {
                 if (idx == (rec.size() - 3)) {
-                    std::cout << idx << std::endl;
                     if( rec.compare(idx + 1, 2, checksum(rec))) { // returns 0 if equal
                         mValid = false;
                     }
@@ -65,11 +69,11 @@ int NmeaRecord::setRecord(std::string rec )
 
 std::string NmeaRecord::checksum(std::string str)
 {
-	int cs = 0;
+	uint8_t cs = 0;
 	std::string::iterator it = str.begin() + 1;
 
 	while( (*it != '*') && (it != str.end()) ) {
- 		cs ^= *it++; // bitwise OR
+		cs ^= *it++; // bitwise XOR
 	}
 	return ( toHex(cs, 2));
 }
@@ -110,7 +114,7 @@ int NmeaRecord::size()
 
 std::string NmeaRecord::toHex(uint64_t num, int len)
 {
-    static const char* hex = "01234567890ABCDEF";
+    static const char* hex = "0123456789ABCDEF";
 
     len = std::min(size_t(len), sizeof(uint64_t));
 

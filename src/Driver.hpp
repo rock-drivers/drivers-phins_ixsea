@@ -24,6 +24,7 @@ namespace phins_ixsea
 
 		public: 
             Driver(Protocol protocol = PhinsStandard);
+            virtual ~Driver();
 
             void setParser(Protocol protocol);
 

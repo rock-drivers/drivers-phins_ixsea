@@ -6,14 +6,27 @@
  */
 
 #include "PhinsStandardParser.hpp"
+#include "NmeaRecord.hpp"
+#include <iostream>
 
-namespace phins_ixsea
+using namespace phins_ixsea;
+
+
+PhinsStandardParser::PhinsStandardParser()
 {
 
-    PhinsStandardParser::PhinsStandardParser()
-    {
-        // TODO Auto-generated constructor stub
+}
 
+void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
+{
+    NmeaRecord nmea((const char*)buffer, size);
+
+    if (nmea.isValid()) {
+        std::cout << "New Record: " << nmea.header() << " " << nmea[1] << std::endl;
+    } else {
+        std::cout << "not valid: " << nmea.sentence() << std::endl;
     }
 
-} /* namespace phins_ixsea */
+}
+
+

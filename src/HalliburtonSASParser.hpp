@@ -20,6 +20,9 @@ namespace phins_ixsea
     {
     public:
         HalliburtonSASParser();
+
+        virtual void parse(uint8_t const *buffer, size_t size);
+
     };
 
 } /* namespace phins_ixsea */

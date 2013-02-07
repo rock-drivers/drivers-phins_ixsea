@@ -19,6 +19,10 @@ Driver::Driver(Protocol protocol)
     mBuffer.resize(10000);
 }
 
+Driver::~Driver()
+{
+    delete mParser;
+}
 
 void Driver::setParser(Protocol protocol)
 {
@@ -38,6 +42,6 @@ void Driver::read()
 {
     int packet_size = readPacket(&mBuffer[0], mBuffer.size());
     if (packet_size)
-        parseEnsemble(&mBuffer[0], packet_size);
+        mParser->parse(&mBuffer[0], packet_size);
 }
 

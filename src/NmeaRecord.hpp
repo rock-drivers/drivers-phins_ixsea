@@ -21,6 +21,7 @@ namespace phins_ixsea{
 
         NmeaRecord();
         NmeaRecord(std::string s);
+        NmeaRecord(const char *buffer, size_t size);
 
         int setRecord(std::string rec);
 

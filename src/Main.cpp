@@ -26,10 +26,10 @@ phins_ixsea::NmeaRecord testNmea(std::string str)
 
 int main(int argc, char** argv)
 {
-//	phins_ixsea::Driver driver;
-//
-//	driver.openURI("udpserver://8112"); //("serial:///dev/ttyS0:9600");
-//	uint8_t buffer[10000];
+	phins_ixsea::Driver driver(phins_ixsea::HalliburtonSAS);
+
+	driver.openURI("udpserver://8112"); //("serial:///dev/ttyS0:9600");
+	driver.setReadTimeout(base::Time::fromSeconds(1));
 
     testNmea("$PTSAG,#00006,135005.00,07,02,2013,00,5301.4970,N,00852.1740,E,F,0000.0,0,0000.0*20\r\n");
     testNmea("$PTSAG,#00006,135005.00,07,02,2013,00,5301.4970,N,00852.1740,E,F,0000.0,0,0000.0*\r\n");
@@ -38,14 +38,19 @@ int main(int argc, char** argv)
     rec.setField(125, "Hallo");
     std::cout << rec.sentence() << std::endl;
 
+    int n = 200;
+	while (n--) {
+	    driver.read();
+	}
 
-//	while (1) {
-//	    int n = driver.readPacket(buffer, 8192, 2000, 2000);
-//	    if (n > 0) {
-//	        buffer[n] = 0;
-//	        std::cout << "     " << buffer;
-//	    }
-//	}
+	driver.close();
+	driver.openURI("udpserver://8113");
+	driver.setParser(phins_ixsea::PhinsStandard);
+
+	n = 200;
+    while (n--) {
+        driver.read();
+    }
 
 	return 0;
 }
