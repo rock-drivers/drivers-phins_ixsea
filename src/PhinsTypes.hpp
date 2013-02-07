@@ -103,6 +103,13 @@
  *
  */
 
+namespace phins_ixsea {
 
+    enum Protocol {
+         PhinsStandard,
+         HalliburtonSAS
+    };
+
+}  // namespace phins_ixsea
 
 #endif /* _PHINS_IXSEA_PHINSTYPES_HPP_ */

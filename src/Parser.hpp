@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "PhinsTypes.hpp"
 
 namespace phins_ixsea
 {
@@ -22,10 +23,6 @@ namespace phins_ixsea
     {
     public:
 
-        enum Protocol {
-            PhinsStandard,
-            HalliburtonSAS
-        };
 
         Parser();
 
@@ -36,6 +33,7 @@ namespace phins_ixsea
          */
         virtual int extractPacket (uint8_t const *buffer, size_t buffer_size) const = 0;
 
+        virtual void parse(uint8_t const *buffer, size_t size) = 0;
     };
 
 

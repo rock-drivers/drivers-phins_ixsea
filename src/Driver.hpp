@@ -10,18 +10,24 @@
 
 #include <iodrivers_base/Driver.hpp>
 #include "Parser.hpp"
+#include "PhinsTypes.hpp"
 
 namespace phins_ixsea
 {
 	class Driver : public iodrivers_base::Driver
 	{
+	    std::vector<uint8_t> mBuffer;
 	    Parser* mParser;
 
 	    int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
 
-		public: 
-            Driver();
 
+		public: 
+            Driver(Protocol protocol = PhinsStandard);
+
+            void setParser(Protocol protocol);
+
+            void read();
 
 	};
 

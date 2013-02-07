@@ -11,11 +11,19 @@ using namespace phins_ixsea;
 
 
 
-Driver::Driver()
-    : iodrivers_base::Driver(8192),
+Driver::Driver(Protocol protocol)
+    : iodrivers_base::Driver(10000),
       mParser(0)
 {
-    mParser = Parser::createParser(Parser::PhinsStandard);
+    mParser = Parser::createParser(protocol);
+    mBuffer.resize(10000);
+}
+
+
+void Driver::setParser(Protocol protocol)
+{
+    delete mParser;
+    mParser = Parser::createParser(protocol);
 }
 
 int Driver::extractPacket (uint8_t const *buffer, size_t buffer_size) const
@@ -26,5 +34,10 @@ int Driver::extractPacket (uint8_t const *buffer, size_t buffer_size) const
 }
 
 
-
+void Driver::read()
+{
+    int packet_size = readPacket(&mBuffer[0], mBuffer.size());
+    if (packet_size)
+        parseEnsemble(&mBuffer[0], packet_size);
+}
 
