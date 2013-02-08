@@ -41,6 +41,12 @@ int main(int argc, char** argv)
     int n = 2000;
 	while (n--) {
 	    driver.read();
+        if (driver.hasUpdate(phins_ixsea::UPD_UTMPOS | phins_ixsea::UPD_HPR))  {
+            base::samples::RigidBodyState rbs;
+            if (driver.getData(rbs)) {
+                cout << "New sample: " << rbs.getYaw() << " " << rbs.getPitch() << " " << rbs.getRoll() << endl;
+            }
+        }
 	}
 
 	driver.close();

@@ -30,7 +30,7 @@ using namespace std;
  *
  */
 
-#define MY_DEBUG(a, b, c, d, e) cout << a << b << " " << c << " " << d << " " << e << endl
+#define MY_DEBUG(a, b, c, d, e) //cout << a << b << " " << c << " " << d << " " << e << endl
 
 PhinsStandardParser::PhinsStandardParser()
 {
@@ -77,13 +77,13 @@ void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
     } else {
         std::cout << "not valid: " << nmea.sentence() << std::endl;
     }
-
 }
 
 void PhinsStandardParser::parseAttitude(const NmeaRecord& nmea)
 {
     mData.att_roll = strtod(nmea[2].c_str(), 0);
     mData.att_pitch = strtod(nmea[3].c_str(), 0);
+    mUpdateFlags |= UPD_ATTITUDE;
     MY_DEBUG("Attitude: ", mData.att_roll, mData.att_pitch, "", "");
 }
 
@@ -93,6 +93,7 @@ void PhinsStandardParser::parsePosition(const NmeaRecord& nmea)
     mData.pos_latitude = strtod(nmea[2].c_str(), 0);
     mData.pos_longitude = strtod(nmea[3].c_str(), 0);
     mData.pos_altitude = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_POSITION;
     MY_DEBUG("Position: ", mData.pos_latitude, mData.pos_longitude, mData.pos_altitude, "");
 }
 
@@ -101,6 +102,7 @@ void PhinsStandardParser::parseSpeed(const NmeaRecord& nmea)
     mData.spd_east = strtod(nmea[2].c_str(), 0);
     mData.spd_north = strtod(nmea[3].c_str(), 0);
     mData.spd_up = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_SPEED;
     MY_DEBUG("Speed: ", mData.spd_east, mData.spd_north, mData.spd_up, "");
 }
 
@@ -111,6 +113,7 @@ void PhinsStandardParser::parseUtmWgs(const NmeaRecord& nmea)
     mData.utm_pos_east = strtod(nmea[4].c_str(), 0);
     mData.utm_pos_north = strtod(nmea[5].c_str(), 0);
     mData.utm_altitude = strtod(nmea[6].c_str(), 0);
+    mUpdateFlags |= UPD_UTMPOS;
     MY_DEBUG("UtmWgs: ", mData.utm_lat_zone, mData.utm_lon_zone, mData.utm_pos_east, mData.utm_pos_north);
 }
 
@@ -119,6 +122,7 @@ void PhinsStandardParser::parseHeave(const NmeaRecord& nmea)
     mData.heave_surge = strtod(nmea[2].c_str(), 0);
     mData.heave_sway = strtod(nmea[3].c_str(), 0);
     mData.heave_heave = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_HEAVE;
     MY_DEBUG("Heave: ", mData.heave_surge, mData.heave_sway, mData.heave_heave, "");
 }
 
@@ -127,6 +131,7 @@ void PhinsStandardParser::parseStddevHrp(const NmeaRecord& nmea)
     mData.stddev_att_heading = strtod(nmea[2].c_str(), 0);
     mData.stddev_att_roll = strtod(nmea[3].c_str(), 0);
     mData.stddev_att_pitch = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_DEV_ATT;
     MY_DEBUG("Stddev Attitude: ", mData.stddev_att_heading, mData.stddev_att_roll, mData.stddev_att_pitch, "");
 
 }
@@ -141,6 +146,7 @@ void PhinsStandardParser::parseStddevPos(const NmeaRecord& nmea)
     mData.stddev_pos_latitude = strtod(nmea[2].c_str(), 0);
     mData.stddev_pos_longitude = strtod(nmea[3].c_str(), 0);
     mData.stddev_pos_altitude = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_DEV_POS;
     MY_DEBUG("Stddev Position: ", mData.stddev_pos_latitude, mData.stddev_pos_longitude, mData.stddev_pos_altitude, "");
 
 }
@@ -148,6 +154,7 @@ void PhinsStandardParser::parseStddevPos(const NmeaRecord& nmea)
 void PhinsStandardParser::parseHeading(const NmeaRecord& nmea)
 {
     mData.att_heading = strtod(nmea[1].c_str(), 0);
+    mUpdateFlags |= UPD_HEADING;
     MY_DEBUG("Heading: ", mData.att_heading, "", "", "" );
 }
 
@@ -156,6 +163,7 @@ void PhinsStandardParser::parseStddevSpeed(const NmeaRecord& nmea)
     mData.stddev_spd_north = strtod(nmea[2].c_str(), 0);
     mData.stddev_spd_east = strtod(nmea[3].c_str(), 0);
     mData.stddev_spd_up = strtod(nmea[4].c_str(), 0);
+    mUpdateFlags |= UPD_DEV_SPD;
     MY_DEBUG("Stddev Speed: ", mData.stddev_spd_east, mData.stddev_spd_north, mData.stddev_spd_up, "");
 }
 
@@ -163,6 +171,7 @@ void PhinsStandardParser::parseAlgoStatus(const NmeaRecord& nmea)
 {
     mData.algo_status_LSB = strtoul(nmea[2].c_str(), 0, 16);
     mData.algo_status_MSB = strtoul(nmea[3].c_str(), 0, 16);
+    mUpdateFlags |= UPD_ALGO_STATUS;
     MY_DEBUG("Algo Status: ", mData.algo_status_LSB, mData.algo_status_MSB, "", "");
 
 }
@@ -171,8 +180,8 @@ void PhinsStandardParser::parseStatus(const NmeaRecord& nmea)
 {
     mData.status_LSB = strtoul(nmea[2].c_str(), 0, 16);
     mData.status_MSB = strtoul(nmea[3].c_str(), 0, 16);
+    mUpdateFlags |= UPD_STATUS;
     MY_DEBUG("Status: ", mData.status_LSB, mData.status_MSB, "", "");
-
 }
 
 

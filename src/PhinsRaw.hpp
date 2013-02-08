@@ -13,6 +13,24 @@
 
 namespace phins_ixsea {
 
+    enum UpdateFlags  {
+        UPD_POSITION = 1,
+        UPD_HEADING = 2,
+        UPD_ATTITUDE = 4,
+        UPD_HPR = 6,
+        UPD_SPEED = 8,
+        UPD_UTMPOS = 16,
+        UPD_HEAVE = 32,
+        UPD_DEV_POS = 64,
+        UPD_DEV_ATT = 128,
+        UPD_DEV_SPD = 256,
+        UPD_ALGO_STATUS = 512,
+        UPD_STATUS = 1024,
+        UPD_HL_STATUS = 2048,
+        UPD_TIME = 8192
+    };
+
+
     struct PhinsRawData {
         double  pos_latitude;
         double  pos_longitude;

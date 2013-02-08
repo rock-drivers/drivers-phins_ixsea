@@ -6,7 +6,6 @@
  */
 
 #include "Driver.hpp"
-#include <base/samples/rigid_body_state.h>
 
 using namespace phins_ixsea;
 
@@ -46,3 +45,12 @@ void Driver::read()
         mParser->parse(&mBuffer[0], packet_size);
 }
 
+bool Driver::hasUpdate(uint32_t flags)
+{
+    return mParser->hasUpdate(flags);
+}
+
+bool Driver::getData(base::samples::RigidBodyState& rbs)
+{
+    return mParser->getData(rbs);
+}

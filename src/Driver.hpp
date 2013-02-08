@@ -11,6 +11,7 @@
 #include <iodrivers_base/Driver.hpp>
 #include <phins_ixsea/Parser.hpp>
 #include <phins_ixsea/PhinsTypes.hpp>
+#include <phins_ixsea/PhinsRaw.hpp>
 
 namespace phins_ixsea
 {
@@ -29,6 +30,8 @@ namespace phins_ixsea
             void setParser(Protocol protocol);
 
             void read();
+            bool hasUpdate(uint32_t flags);
+            bool getData(base::samples::RigidBodyState& rbs);
 
 	};
 
