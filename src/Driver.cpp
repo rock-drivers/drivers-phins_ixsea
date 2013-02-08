@@ -6,6 +6,7 @@
  */
 
 #include "Driver.hpp"
+#include <base/samples/rigid_body_state.h>
 
 using namespace phins_ixsea;
 

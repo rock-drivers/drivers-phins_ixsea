@@ -9,8 +9,8 @@
 #define _PHINS_IXSEA_DRIVER_HPP_
 
 #include <iodrivers_base/Driver.hpp>
-#include "Parser.hpp"
-#include "PhinsTypes.hpp"
+#include <phins_ixsea/Parser.hpp>
+#include <phins_ixsea/PhinsTypes.hpp>
 
 namespace phins_ixsea
 {
