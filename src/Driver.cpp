@@ -14,7 +14,8 @@ using namespace phins_ixsea;
 Driver::Driver(Protocol protocol)
     : iodrivers_base::Driver(10000),
       mParser(0),
-      mUpdateFlags(0)
+      mUpdateFlags(0),
+      mPhinsStatus()
 {
     mParser = Parser::createParser(protocol);
     mBuffer.resize(10000);
@@ -53,18 +54,16 @@ void Driver::read()
 
 void Driver::updateSamples()
 {
-    if (mParser->hasAnyUpdate(UPD_UTMPOS | UPD_POSITION | UPD_SPEED | UPD_ATTITUDE)) {
-        mUtmPose.time = base::Time::now();
-        mGeoPose.time = mUtmPose.time;
-    }
-
+    base::Time time = base::Time::now();
     if (mParser->hasUpdate(UPD_UTMPOS, true)) {
+        mUtmPose.time = time;
         mUtmPose.position.x() = mParser->mData.utm_pos_east;
         mUtmPose.position.y() = mParser->mData.utm_pos_north;
         mUtmPose.position.z() = mParser->mData.utm_altitude;
         mUpdateFlags |= UPD_UTMPOS;
     }
     if (mParser->hasUpdate(UPD_POSITION, true)) {
+        mGeoPose.time = time;
         mGeoPose.position.x() = mParser->mData.pos_longitude;
         mGeoPose.position.y() = mParser->mData.pos_latitude;
         mGeoPose.position.z() = mParser->mData.pos_altitude;
@@ -78,11 +77,21 @@ void Driver::updateSamples()
         mUpdateFlags |= UPD_SPEED;
     }
     if (mParser->hasUpdate(UPD_ATTITUDE, true)) {
+        mUtmPose.time = time;
+        mGeoPose.time = time;
         mUtmPose.orientation = Eigen::AngleAxisd(mParser->mData.att_heading * M_PI / 180.0, Eigen::Vector3d::UnitZ())
                         * Eigen::AngleAxisd(mParser->mData.att_pitch * M_PI / 180.0, Eigen::Vector3d::UnitY())
                         * Eigen::AngleAxisd(mParser->mData.att_roll * M_PI / 180.0, Eigen::Vector3d::UnitX());
         mGeoPose.orientation = mUtmPose.orientation;
         mUpdateFlags |= UPD_HPR;
+    }
+    if (mParser->hasUpdate(UPD_STATUS)) {
+        mPhinsStatus.time = time;
+        mPhinsStatus.status_lsb = mParser->mData.status_LSB;
+        mPhinsStatus.status_msb = mParser->mData.status_MSB;
+        mPhinsStatus.algo_status_lsb = mParser->mData.algo_status_LSB;
+        mPhinsStatus.algo_status_msb = mParser->mData.algo_status_MSB;
+        mUpdateFlags |= UPD_STATUS;
     }
 }
 
@@ -115,3 +124,7 @@ base::samples::RigidBodyState Driver::relativePose(const base::Position origin) 
     return rbs;
 }
 
+PhinsStatus Driver::phinsStatus() const
+{
+    return mPhinsStatus;
+}

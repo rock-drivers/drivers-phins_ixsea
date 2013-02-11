@@ -25,7 +25,8 @@ namespace phins_ixsea {
         UPD_DEV_ATT = 128,
         UPD_DEV_SPD = 256,
         UPD_ALGO_STATUS = 512,
-        UPD_STATUS = 1024,
+        UPD_IO_STATUS = 1024,
+        UPD_STATUS = 1536,
         UPD_HL_STATUS = 2048,
         UPD_TIME = 8192
     };

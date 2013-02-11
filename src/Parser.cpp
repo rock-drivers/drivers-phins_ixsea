@@ -49,8 +49,6 @@ bool Parser::hasAnyUpdate(uint32_t flags)
 }
 
 
-
-
 NmeaParser::NmeaParser()
     : Parser()
 {

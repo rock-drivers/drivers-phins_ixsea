@@ -25,9 +25,12 @@ namespace phins_ixsea
         base::samples::RigidBodyState   mUtmPose;
         base::samples::RigidBodyState   mGeoPose;
 
+        uint32_t                        mUpdateFlags;
+
+        PhinsStatus                     mPhinsStatus;
+
 	    int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
 
-	    uint32_t    mUpdateFlags;
 
 	    void updateSamples();
 
@@ -44,6 +47,8 @@ namespace phins_ixsea
             const base::samples::RigidBodyState& geoPose() const;
 
             base::samples::RigidBodyState relativePose(const base::Position origin) const;
+
+            PhinsStatus phinsStatus() const;
 	};
 
 } // end namespace phins_ixsea
