@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <phins_ixsea/PhinsTypes.hpp>
 #include <phins_ixsea/PhinsRaw.hpp>
-#include <base/samples/rigid_body_state.h>
 
 namespace phins_ixsea
 {
@@ -49,11 +48,8 @@ namespace phins_ixsea
          */
         bool hasUpdate(uint32_t flags, bool reset = false);
 
+        bool hasAnyUpdate(uint32_t flags);
 
-        bool getData(base::samples::RigidBodyState& rbs);
-
-
-    protected:
         PhinsRawData    mData;
         uint32_t        mUpdateFlags;
     };

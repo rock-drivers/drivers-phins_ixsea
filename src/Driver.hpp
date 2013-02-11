@@ -12,6 +12,8 @@
 #include <phins_ixsea/Parser.hpp>
 #include <phins_ixsea/PhinsTypes.hpp>
 #include <phins_ixsea/PhinsRaw.hpp>
+#include <base/samples/rigid_body_state.h>
+
 
 namespace phins_ixsea
 {
@@ -20,19 +22,28 @@ namespace phins_ixsea
 	    std::vector<uint8_t> mBuffer;
 	    Parser* mParser;
 
+        base::samples::RigidBodyState   mUtmPose;
+        base::samples::RigidBodyState   mGeoPose;
+
 	    int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
+
+	    uint32_t    mUpdateFlags;
+
+	    void updateSamples();
 
 
 		public: 
-            Driver(Protocol protocol = PhinsStandard);
+	        Driver(Protocol protocol = PhinsStandard);
             virtual ~Driver();
 
             void setParser(Protocol protocol);
 
             void read();
-            bool hasUpdate(uint32_t flags);
-            bool getData(base::samples::RigidBodyState& rbs);
+            bool hasUpdate(uint32_t flags, bool reset = false);
+            const base::samples::RigidBodyState& utmPose() const;
+            const base::samples::RigidBodyState& geoPose() const;
 
+            base::samples::RigidBodyState relativePose(const base::Position origin) const;
 	};
 
 } // end namespace phins_ixsea
