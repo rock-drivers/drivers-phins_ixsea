@@ -20,6 +20,8 @@ Driver::Driver(Protocol protocol)
     mParser = Parser::createParser(protocol);
     mBuffer.resize(10000);
     mUtmPose.invalidate();
+    mUtmPose.sourceFrame = "frame";
+    mUtmPose.targetFrame = "world";
     mGeoPose.invalidate();
 }
 
@@ -79,7 +81,7 @@ void Driver::updateSamples()
     if (mParser->hasUpdate(UPD_ATTITUDE, true)) {
         mUtmPose.time = time;
         mGeoPose.time = time;
-        mUtmPose.orientation = Eigen::AngleAxisd(mParser->mData.att_heading * M_PI / 180.0, Eigen::Vector3d::UnitZ())
+        mUtmPose.orientation = Eigen::AngleAxisd(mParser->mData.att_heading * M_PI / 180.0, -Eigen::Vector3d::UnitZ())
                         * Eigen::AngleAxisd(mParser->mData.att_pitch * M_PI / 180.0, Eigen::Vector3d::UnitY())
                         * Eigen::AngleAxisd(mParser->mData.att_roll * M_PI / 180.0, Eigen::Vector3d::UnitX());
         mGeoPose.orientation = mUtmPose.orientation;
@@ -91,6 +93,7 @@ void Driver::updateSamples()
         mPhinsStatus.status_msb = mParser->mData.status_MSB;
         mPhinsStatus.algo_status_lsb = mParser->mData.algo_status_LSB;
         mPhinsStatus.algo_status_msb = mParser->mData.algo_status_MSB;
+        mPhinsStatus.user_status = mParser->mData.user_status;
         mUpdateFlags |= UPD_STATUS;
     }
 }
@@ -127,4 +130,19 @@ base::samples::RigidBodyState Driver::relativePose(const base::Position origin) 
 PhinsStatus Driver::phinsStatus() const
 {
     return mPhinsStatus;
+}
+
+NavigationMode Driver::navigationMode() const
+{
+    NavigationMode mode = UNKNOWN_MODE;
+
+    uint32_t st = mParser->mData.algo_status_LSB  & (NAVIGATION | ALIGNMENT | FINE_ALIGNMENT);
+
+    if (st & NAVIGATION)
+        mode = NAVIGATION_MODE;
+    if (st & FINE_ALIGNMENT)
+        mode = FINE_ALIGN_MODE;
+    if (st & ALIGNMENT)
+        mode = COARSE_ALIGN_MODE;
+    return mode;
 }

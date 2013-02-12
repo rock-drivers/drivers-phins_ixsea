@@ -70,6 +70,7 @@ void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
             } else if (subHeader == "STATUS") {
                 parseStatus(nmea);
             } else if (subHeader == "HT_STS") {
+                parseUserStatus(nmea);
             }
         } else if (header == "$HEHDT") {
             parseHeading(nmea);
@@ -185,6 +186,11 @@ void PhinsStandardParser::parseStatus(const NmeaRecord& nmea)
 }
 
 
-
+void PhinsStandardParser::parseUserStatus(const NmeaRecord& nmea)
+{
+    mData.user_status = strtoul(nmea[2].c_str(), 0, 16);
+    mUpdateFlags |= UPD_USER_STATUS;
+    MY_DEBUG("Status: ", mData.user_status, "", "", "");
+}
 
 

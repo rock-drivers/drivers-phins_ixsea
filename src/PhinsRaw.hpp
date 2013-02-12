@@ -26,8 +26,8 @@ namespace phins_ixsea {
         UPD_DEV_SPD = 256,
         UPD_ALGO_STATUS = 512,
         UPD_IO_STATUS = 1024,
-        UPD_STATUS = 1536,
-        UPD_HL_STATUS = 2048,
+        UPD_USER_STATUS = 2048,
+        UPD_STATUS = 3584,
         UPD_TIME = 8192
     };
 
@@ -73,7 +73,7 @@ namespace phins_ixsea {
         uint32_t    algo_status_LSB;
         uint32_t    algo_status_MSB;
 
-        uint32_t    hilevel_status;
+        uint32_t    user_status;
 
         base::Time time;
 

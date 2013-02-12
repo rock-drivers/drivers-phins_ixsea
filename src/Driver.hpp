@@ -49,6 +49,7 @@ namespace phins_ixsea
             base::samples::RigidBodyState relativePose(const base::Position origin) const;
 
             PhinsStatus phinsStatus() const;
+            NavigationMode navigationMode() const;
 	};
 
 } // end namespace phins_ixsea

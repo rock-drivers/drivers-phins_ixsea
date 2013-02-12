@@ -113,11 +113,11 @@ namespace phins_ixsea {
 
     enum PhinsStatusL {
         SERIAL_IN_R_ERR = 0x00000001,
-        INPUT_A_ERR  = 0x00000002,
-        INPUT_B_ERR  = 0x00000004,
-        INPUT_C_ERR = 0x00000008,
-        INPUT_D_ERR = 0x00000010,
-        INPUT_E_ERR = 0x00000020,
+        INP_A_ERR  = 0x00000002,
+        INP_B_ERR  = 0x00000004,
+        INP_C_ERR = 0x00000008,
+        INP_D_ERR = 0x00000010,
+        INP_E_ERR = 0x00000020,
         INPUT_R_ACTIVITY = 0x00000100,
         INPUT_A_ACTIVITY = 0x00000200,
         INPUT_B_ACTIVITY = 0x00000400,
@@ -167,7 +167,7 @@ namespace phins_ixsea {
     };
 
     enum PhinsAlgoStatusL {
-        NAVIGATION = 0x00000001,
+        NAVIGATION_BIT = 0x00000001,
         ALIGNMENT = 0x00000002,
         FINE_ALIGNMENT = 0x00000004,
         DEAD_RECKONING =0x00000008,
@@ -195,8 +195,8 @@ namespace phins_ixsea {
         LBL_VALID =0x02000000,
         LBL_WAITING = 0x04000000,
         LBL_REJECTED  =0x08000000,
-        ALTITUDE_SATURATION =0x10000000,
-        SPEED_SATURATION  =0x20000000,
+        ALT_SATURATION =0x10000000,
+        SPD_SATURATION  =0x20000000,
         INTERPOLATION_MISSED =0x40000000,
         HEAVE_INITIALISATION =0x80000000
     };
@@ -232,12 +232,123 @@ namespace phins_ixsea {
         MANUALGPS_REJECTED = 0x80000000
     };
 
+    enum PhinsUserStatus {
+        DVL_RECEIVED_VALID = 0x00000001,
+        GPS_RECEIVED_VALID = 0x00000002,
+        DEPTH_RECEIVED_VALID = 0x00000004,
+        USBL_RECEIVED_VALID = 0x00000008,
+        LBL_RECEIVED_VALID = 0x00000010,
+        GPS2_RECEIVED_VALID = 0x00000020,
+        EMLOG_RECEIVED_VALID = 0x00000040,
+        MANUAL_GPS_RECEIVED_VALID = 0x00000080,
+        TIME_RECEIVED_VALID = 0x00000100,
+        FOG_ANOMALY = 0x00000200,
+        ACC_ANOMALY = 0x00000400,
+        TEMPERATURE_ERR = 0x00000800,
+        CPU_OVERLOAD = 0x00001000,
+        DYNAMIC_EXCEDEED = 0x00002000,
+        SPEED_SATURATION = 0x00003000,
+        ALTITUDE_SATURATION = 0x00004000,
+        INPUT_A_ERR = 0x00010000,
+        INPUT_B_ERR = 0x00020000,
+        INPUT_C_ERR = 0x00040000,
+        INPUT_D_ERR = 0x00080000,
+        INPUT_E_ERR = 0x00100000,
+        OUTPUT_A_ERR = 0x00200000,
+        OUTPUT_B_ERR = 0x00400000,
+        OUTPUT_C_ERR = 0x00800000,
+        OUTPUT_D_ERR = 0x01000000,
+        OUTPUT_E_ERR = 0x02000000,
+        HRP_INVALID = 0x04000000,
+        ALIGNEMENT = 0x08000000,
+        FINE_ALIGNEMENT = 0x10000000,
+        NAVIGATION = 0x20000000,
+        DEGRADED_MODE = 0x40000000,
+        FAILURE_MODE = 0x80000000
+    };
+
+    enum NavigationMode {
+        UNKNOWN_MODE = 0,
+        COARSE_ALIGN_MODE,
+        FINE_ALIGN_MODE,
+        NAVIGATION_MODE,
+        ERROR_MODE
+    };
+
+
+//    enum PhinsInputStatus {
+//        INP_IDLE = 0x00000000,
+//        INP_R_ERROR = 0x00000001,
+//        INP_R_ACTIVITY = 0x00000002,
+//        INP_R_MASK = 0x0000000f,
+//        INP_A_ERROR = 0x00000010,
+//        INP_A_ACTIVITY = 0x00000020,
+//        INP_A_MASK = 0x000000f0,
+//        INP_B_ERROR = 0x00000100,
+//        INP_B_ACTIVITY = 0x00000200,
+//        INP_b_MASK = 0x00000f00,
+//        INP_C_ERROR = 0x00001000,
+//        INP_C_ACTIVITY = 0x00002000,
+//        INP_c_MASK = 0x0000f000,
+//        INP_D_ERROR = 0x00010000,
+//        INP_D_ACTIVITY = 0x00020000,
+//        INP_D_MASK = 0x000f0000,
+//        INP_E_ERROR = 0x00100000,
+//        INP_E_ACTIVITY = 0x00200000,
+//        INP_E_MASK = 0x00f00000,
+//        ETH_ACTIVITY = 0x01000000,
+//        ETH_FULL = 0x02000000,
+//        ETH_MASK = 0x0f000000
+//    };
+//
+//    enum PhinsOutputStatus {
+//        OUT_R_FULL  = 1,
+//        OUT_A_FULL  = 2,
+//        OUT_B_FULL  = 4,
+//        OUT_C_FULL  = 8,
+//        OUT_D_FULL  = 16,
+//        OUT_E_FULL  = 32,
+//    };
+//
+//    enum PhinsPulsInput {
+//        PULS_INP_A = 1,
+//        PULS_INP_B = 1,
+//        PULS_INP_C = 1,
+//        PULS_INP_D = 1
+//    };
+//
+//    enum ExtSensorStatus {
+//        SENSOR_DETECTED = 1,
+//        SENSOR_RECEIVED = 2,
+//        SENSOR_VALID = 4,
+//        SENSOR_REJECTED = 8
+//    };
+//
+//
+//    struct PhinsStatus {
+//        base::Time  time;
+//        uint32_t    input_status;
+//        uint32_t    puls_status;
+//        uint32_t    output_status;
+//        uint32_t    device_status;
+//        uint32_t    dvl_bt_status;
+//        uint32_t    dvl_wt_status;
+//        uint32_t    gps_status;
+//        uint32_t    gps2_status;
+//        uint32_t    man_gps_status;
+//        uint32_t    usbl_status;
+//        uint32_t    lbl_status;
+//        uint32_t    depth_status;
+//        uint32_t    altitude_status;
+//        uint32_t    processing_status;
+//    };
     struct PhinsStatus {
         base::Time  time;
         uint32_t    status_lsb;
         uint32_t    status_msb;
         uint32_t    algo_status_lsb;
         uint32_t    algo_status_msb;
+        uint32_t    user_status;
     };
 
 }  // namespace phins_ixsea
