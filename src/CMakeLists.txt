@@ -1,6 +1,6 @@
 rock_library(phins_ixsea
-    SOURCES Driver.cpp Parser.cpp PhinsStandardParser.cpp HalliburtonSASParser.cpp NmeaRecord.cpp
-    HEADERS Driver.hpp Parser.hpp PhinsStandardParser.hpp HalliburtonSASParser.hpp NmeaRecord.hpp 
+    SOURCES Driver.cpp Parser.cpp PhinsStandardParser.cpp HalliburtonSASParser.cpp NmeaRecord.cpp IODriver.cpp
+    HEADERS Driver.hpp Parser.hpp PhinsStandardParser.hpp HalliburtonSASParser.hpp NmeaRecord.hpp IODriver.hpp
             PhinsTypes.hpp PhinsRaw.hpp
     DEPS_PKGCONFIG base-types iodrivers_base)
 

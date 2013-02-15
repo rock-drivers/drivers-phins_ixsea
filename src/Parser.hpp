@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string>
 #include <phins_ixsea/PhinsTypes.hpp>
 #include <phins_ixsea/PhinsRaw.hpp>
 
@@ -22,9 +23,9 @@ namespace phins_ixsea
      */
     class Parser
     {
+
+
     public:
-
-
         Parser();
 
         static Parser* createParser(Protocol protocol);
@@ -57,6 +58,7 @@ namespace phins_ixsea
 
     class NmeaParser : public Parser
     {
+
     public:
         NmeaParser();
         /** extracts a NMEA 183 sentence from the datastream
@@ -64,6 +66,9 @@ namespace phins_ixsea
          * The sentence may contain a checksum
          */
         virtual int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
+
+    protected:
+
     };
 
 } /* namespace phins_ixsea */

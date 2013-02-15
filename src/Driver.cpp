@@ -15,7 +15,8 @@ Driver::Driver(Protocol protocol)
     : iodrivers_base::Driver(10000),
       mParser(0),
       mUpdateFlags(0),
-      mPhinsStatus()
+      mPhinsStatus(),
+      mPhinsExtStatus()
 {
     mParser = Parser::createParser(protocol);
     mBuffer.resize(10000);
@@ -87,14 +88,24 @@ void Driver::updateSamples()
         mGeoPose.orientation = mUtmPose.orientation;
         mUpdateFlags |= UPD_HPR;
     }
-    if (mParser->hasUpdate(UPD_STATUS)) {
+    if (mParser->hasUpdate(UPD_USER_STATUS)) {
+        uint32_t ust = mParser->mData.user_status;
         mPhinsStatus.time = time;
-        mPhinsStatus.status_lsb = mParser->mData.status_LSB;
-        mPhinsStatus.status_msb = mParser->mData.status_MSB;
-        mPhinsStatus.algo_status_lsb = mParser->mData.algo_status_LSB;
-        mPhinsStatus.algo_status_msb = mParser->mData.algo_status_MSB;
-        mPhinsStatus.user_status = mParser->mData.user_status;
-        mUpdateFlags |= UPD_STATUS;
+        mPhinsStatus.sensor_status = ust | 0x000001ff;
+        mPhinsStatus.input_status = ust | 0x001f0000;
+        mPhinsStatus.system_status = ust | 0X0400FD00;
+        mPhinsStatus.mode = ust | 0xf8000000;
+        mUpdateFlags |= UPD_USER_STATUS;
+
+    }
+    if (mParser->hasUpdate(UPD_EXT_STATUS)) {
+        mPhinsExtStatus.time = time;
+        mPhinsExtStatus.status_lsb = mParser->mData.status_LSB;
+        mPhinsExtStatus.status_msb = mParser->mData.status_MSB;
+        mPhinsExtStatus.algo_status_lsb = mParser->mData.algo_status_LSB;
+        mPhinsExtStatus.algo_status_msb = mParser->mData.algo_status_MSB;
+        mPhinsExtStatus.user_status = mParser->mData.user_status;
+        mUpdateFlags |= UPD_EXT_STATUS;
     }
 }
 
@@ -132,17 +143,25 @@ PhinsStatus Driver::phinsStatus() const
     return mPhinsStatus;
 }
 
+PhinsExtStatus Driver::phinsExtStatus() const
+{
+    return mPhinsExtStatus;
+}
+
 NavigationMode Driver::navigationMode() const
 {
     NavigationMode mode = UNKNOWN_MODE;
 
-    uint32_t st = mParser->mData.algo_status_LSB  & (NAVIGATION | ALIGNMENT | FINE_ALIGNMENT);
+    uint32_t st = mPhinsExtStatus.algo_status_lsb;
 
-    if (st & NAVIGATION)
+    if (st & NAVIGATION_BIT)
         mode = NAVIGATION_MODE;
     if (st & FINE_ALIGNMENT)
         mode = FINE_ALIGN_MODE;
     if (st & ALIGNMENT)
         mode = COARSE_ALIGN_MODE;
+    if (st & (ALT_SATURATION | SPD_SATURATION)) {
+        mode = FAILURE_MODE;
+    }
     return mode;
 }

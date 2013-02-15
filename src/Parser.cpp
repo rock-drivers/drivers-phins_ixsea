@@ -9,7 +9,6 @@
 #include "PhinsStandardParser.hpp"
 #include "HalliburtonSASParser.hpp"
 
-
 namespace phins_ixsea
 {
 

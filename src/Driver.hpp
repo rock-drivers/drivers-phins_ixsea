@@ -28,6 +28,7 @@ namespace phins_ixsea
         uint32_t                        mUpdateFlags;
 
         PhinsStatus                     mPhinsStatus;
+        PhinsExtStatus                  mPhinsExtStatus;
 
 	    int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
 
@@ -49,6 +50,7 @@ namespace phins_ixsea
             base::samples::RigidBodyState relativePose(const base::Position origin) const;
 
             PhinsStatus phinsStatus() const;
+            PhinsExtStatus phinsExtStatus() const;
             NavigationMode navigationMode() const;
 	};
 
