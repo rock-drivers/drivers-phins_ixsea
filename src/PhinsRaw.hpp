@@ -188,6 +188,54 @@ namespace phins_ixsea {
         FAILURE = 0x80000000
     };
 
+    enum PhinsStatusSensor {
+        STATUS_DV_VALID = 0x00000001,
+        STATUS_GPS_VALID = 0x00000002,
+        STATUS_DPTH_VALID = 0x00000004,
+        STATUS_USBL_VALID = 0x00000008,
+        STATUS_LBL_VALID = 0x00000010,
+        STATUS_GPS2_VALID = 0x00000020,
+        STATUS_EMLOG_VALID = 0x00000040,
+        STATUS_MANGPS_VALID = 0x00000080,
+        STATUS_TIME_VALID = 0x00000100
+    };
+
+    enum PhinsStatusInput {
+        STATUS_INPUTA_ERR = 0x00000001,
+        STATUS_INPUTB_ERR = 0x00000002,
+        STATUS_INPUTC_ERR = 0x00000004,
+        STATUS_INPUTD_ERR = 0x00000008,
+        STATUS_INPUTE_ERR = 0x00000010
+    };
+    enum PhinsStatusOutput {
+        STATUS_OUTPUTA_ERR = 0x00000001,
+        STATUS_OUTPUTB_ERR = 0x00000002,
+        STATUS_OUTPUTC_ERR = 0x00000004,
+        STATUS_OUTPUTD_ERR = 0x00000008,
+        STATUS_OUTPUTE_ERR = 0x00000010
+    };
+
+    enum PhinsStatusSystem {
+        STATUS_FOG = 0x00000001,
+        STATUS_ACC = 0x00000002,
+        STATUS_TEMP = 0x00000004,
+        STATUS_CPU = 0x00000008,
+        STATUS_DYNAMIC = 0x00000010,
+        STATUS_SPEED = 0x00000020,
+        STATUS_ALTITUDE = 0x00000040,
+        STATUS_HPR = 0x00000080,
+    };
+
+    enum PhinsStatusMode {
+        STATUS_ALIGNE = 0x00000001,
+        STATUS_FINE_ALIGNE = 0x00000002,
+        STATUS_NAVIGATION = 0x00000004,
+        STATUS_DEGRADED = 0x00000008,
+        STATUS_FAILURE = 0x00000010,
+
+    };
+
+
     struct PhinsRawData {
         double  pos_latitude;
         double  pos_longitude;

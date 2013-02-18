@@ -8,6 +8,7 @@
 #include "PhinsStandardParser.hpp"
 #include "NmeaRecord.hpp"
 #include <iostream>
+#include <exception>
 
 using namespace phins_ixsea;
 using namespace std;
@@ -77,6 +78,7 @@ void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
         }
     } else {
         std::cout << "not valid: " << nmea.sentence() << std::endl;
+        throw std::runtime_error("Invalid MEA sentence received");
     }
 }
 
@@ -178,7 +180,7 @@ void PhinsStandardParser::parseAlgoStatus(const NmeaRecord& nmea)
     mData.user_status =
                 ((mData.algo_status_LSB & LOG_VALID)
                         || (mData.algo_status_MSB & WATERTRACK_VALID) ?  DVL_RECEIVED_VALID : 0) |
-                (mData.algo_status_MSB & GPS_VALID ? GPS_RECEIVED_VALID : 0) |
+                (mData.algo_status_LSB & GPS_VALID ? GPS_RECEIVED_VALID : 0) |
                 (mData.algo_status_LSB & DEPTH_VALID ? DEPTH_RECEIVED_VALID : 0) |
                 (mData.algo_status_LSB & USBL_VALID ? USBL_RECEIVED_VALID : 0) |
                 (mData.algo_status_LSB & LBL_VALID ? LBL_RECEIVED_VALID : 0) |
@@ -188,10 +190,10 @@ void PhinsStandardParser::parseAlgoStatus(const NmeaRecord& nmea)
                 (mData.status_MSB & UTC_DETECTED ? TIME_RECEIVED_VALID : 0) |
                 (mData.status_MSB & MPC_OVERLOAD ? CPU_OVERLOAD : 0) |
                 (mData.algo_status_LSB & INTERPOLATION_MISSED ? DYNAMIC_EXCEDEED : 0) |
-                (mData.status_LSB & SPD_SATURATION ? SPEED_SATURATION : 0) |
+                (mData.algo_status_LSB & SPD_SATURATION ? SPEED_SATURATION : 0) |
                 (mData.algo_status_LSB & ALT_SATURATION ? ALTITUDE_SATURATION : 0) |
                 ((mData.status_LSB << 15) & 0x001f0000) |
-                ((mData.status_LSB << 4) & 0x03d00000) |
+                ((mData.status_LSB << 4) & 0x03e00000) |
                 (mData.algo_status_LSB & (ALIGNE | SPD_SATURATION ) ? HRP_INVALID : 0) |
                 (mData.algo_status_LSB & ALIGNE ? ALIGNEMENT : 0) |
                 (mData.algo_status_LSB & FINE_ALIGNE ? FINE_ALIGNEMENT : 0) |

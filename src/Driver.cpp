@@ -89,13 +89,14 @@ void Driver::updateSamples()
         mGeoPose.orientation = mUtmPose.orientation;
         mUpdateFlags |= UPD_HPR;
     }
-    if (mParser->hasUpdate(UPD_USER_STATUS)) {
+    if (mParser->hasUpdate(UPD_USER_STATUS, true)) {
         uint32_t ust = mParser->mData.user_status;
         mPhinsStatus.time = time;
-        mPhinsStatus.sensor_status = ust | 0x000001ff;
-        mPhinsStatus.input_status = ust | 0x001f0000;
-        mPhinsStatus.system_status = ust | 0X0400FD00;
-        mPhinsStatus.mode = ust | 0xf8000000;
+        mPhinsStatus.sensor_status = ust & 0x000001ff;
+        mPhinsStatus.input_status = (ust >> 16) & 0x0000001f;
+        mPhinsStatus.output_status = (ust >> 21) & 0x0000001f;
+        mPhinsStatus.system_status = ((ust >> 9) & 0x0000007f) | ((ust >> 18) & 0x00000080);
+        mPhinsStatus.mode = (ust >> 27) & 0x0000001f;
         mUpdateFlags |= UPD_USER_STATUS;
 
     }
