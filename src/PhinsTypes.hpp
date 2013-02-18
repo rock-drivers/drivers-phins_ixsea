@@ -121,7 +121,9 @@ namespace phins_ixsea {
         FAILURE_MODE,
     };
 
-
+    /** PhinsStatus is a synthesis of Status and Algostatus
+     *
+     */
     struct PhinsStatus {
         base::Time  time;
         uint32_t    sensor_status;

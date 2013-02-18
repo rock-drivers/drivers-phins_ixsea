@@ -7,6 +7,7 @@
 
 #include "Driver.hpp"
 
+
 using namespace phins_ixsea;
 
 
@@ -98,7 +99,7 @@ void Driver::updateSamples()
         mUpdateFlags |= UPD_USER_STATUS;
 
     }
-    if (mParser->hasUpdate(UPD_EXT_STATUS)) {
+    if (mParser->hasUpdate(UPD_EXT_STATUS, true)) {
         mPhinsExtStatus.time = time;
         mPhinsExtStatus.status_lsb = mParser->mData.status_LSB;
         mPhinsExtStatus.status_msb = mParser->mData.status_MSB;
@@ -154,11 +155,11 @@ NavigationMode Driver::navigationMode() const
 
     uint32_t st = mPhinsExtStatus.algo_status_lsb;
 
-    if (st & NAVIGATION_BIT)
+    if (st & NAVIG)
         mode = NAVIGATION_MODE;
-    if (st & FINE_ALIGNMENT)
+    if (st & FINE_ALIGNE)
         mode = FINE_ALIGN_MODE;
-    if (st & ALIGNMENT)
+    if (st & ALIGNE)
         mode = COARSE_ALIGN_MODE;
     if (st & (ALT_SATURATION | SPD_SATURATION)) {
         mode = FAILURE_MODE;

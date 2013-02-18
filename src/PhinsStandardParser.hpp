@@ -32,7 +32,7 @@ namespace phins_ixsea
         void parseStddevSpeed(const NmeaRecord& nmea);
         void parseAlgoStatus(const NmeaRecord& nmea);
         void parseStatus(const NmeaRecord& nmea);
-        void parseUserStatus(const NmeaRecord& nmea);
+        void parseHighLevelStatus(const NmeaRecord& nmea);
 
     public:
         PhinsStandardParser();

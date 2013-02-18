@@ -69,8 +69,8 @@ void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
                 parseAlgoStatus(nmea);
             } else if (subHeader == "STATUS") {
                 parseStatus(nmea);
-            } else if (subHeader == "HT_STS") {
-                parseUserStatus(nmea);
+//            } else if (subHeader == "HT_STS") {
+//                parseUserStatus(nmea);
             }
         } else if (header == "$HEHDT") {
             parseHeading(nmea);
@@ -173,7 +173,33 @@ void PhinsStandardParser::parseAlgoStatus(const NmeaRecord& nmea)
     mData.algo_status_LSB = strtoul(nmea[2].c_str(), 0, 16);
     mData.algo_status_MSB = strtoul(nmea[3].c_str(), 0, 16);
     mUpdateFlags |= UPD_ALGO_STATUS;
-    MY_DEBUG("Algo Status: ", mData.algo_status_LSB, mData.algo_status_MSB, reverseBytes(nmea[2]), nmea[2]);
+    MY_DEBUG("Algo Status: ", mData.algo_status_LSB, mData.algo_status_MSB, nmea[2], "");
+
+    mData.user_status =
+                ((mData.algo_status_LSB & LOG_VALID)
+                        || (mData.algo_status_MSB & WATERTRACK_VALID) ?  DVL_RECEIVED_VALID : 0) |
+                (mData.algo_status_MSB & GPS_VALID ? GPS_RECEIVED_VALID : 0) |
+                (mData.algo_status_LSB & DEPTH_VALID ? DEPTH_RECEIVED_VALID : 0) |
+                (mData.algo_status_LSB & USBL_VALID ? USBL_RECEIVED_VALID : 0) |
+                (mData.algo_status_LSB & LBL_VALID ? LBL_RECEIVED_VALID : 0) |
+                (mData.algo_status_MSB & GPS2_VALID ? GPS2_RECEIVED_VALID : 0) |
+                (mData.algo_status_MSB & EMLOG_VALID ? EMLOG_RECEIVED_VALID : 0) |
+                (mData.algo_status_MSB & MANUALGPS_VALID ? MANUAL_GPS_RECEIVED_VALID : 0) |
+                (mData.status_MSB & UTC_DETECTED ? TIME_RECEIVED_VALID : 0) |
+                (mData.status_MSB & MPC_OVERLOAD ? CPU_OVERLOAD : 0) |
+                (mData.algo_status_LSB & INTERPOLATION_MISSED ? DYNAMIC_EXCEDEED : 0) |
+                (mData.status_LSB & SPD_SATURATION ? SPEED_SATURATION : 0) |
+                (mData.algo_status_LSB & ALT_SATURATION ? ALTITUDE_SATURATION : 0) |
+                ((mData.status_LSB << 15) & 0x001f0000) |
+                ((mData.status_LSB << 4) & 0x03d00000) |
+                (mData.algo_status_LSB & (ALIGNE | SPD_SATURATION ) ? HRP_INVALID : 0) |
+                (mData.algo_status_LSB & ALIGNE ? ALIGNEMENT : 0) |
+                (mData.algo_status_LSB & FINE_ALIGNE ? FINE_ALIGNEMENT : 0) |
+                (mData.algo_status_LSB & NAVIG ? NAVIGATION : 0) |
+                (mData.algo_status_LSB & (INTERPOLATION_MISSED | ALIGNE) ? DEGRADED : 0) |
+                (mData.algo_status_LSB & (ALT_SATURATION | SPD_SATURATION) ? FAILURE : 0);
+    mUpdateFlags |= UPD_USER_STATUS;
+
 
 }
 
@@ -186,10 +212,12 @@ void PhinsStandardParser::parseStatus(const NmeaRecord& nmea)
 }
 
 
-void PhinsStandardParser::parseUserStatus(const NmeaRecord& nmea)
+void PhinsStandardParser::parseHighLevelStatus(const NmeaRecord& nmea)
 {
-    mData.user_status = strtoul(nmea[2].c_str(), 0, 16);
-    mUpdateFlags |= UPD_USER_STATUS;
+// Phins Standard doesn't provide UserStatus. This is a bug in the documentation
+//    $HT_STS contains a proprietary statusword
+//    mData.user_status = strtoul(nmea[2].c_str(), 0, 16);
+//    mUpdateFlags |= UPD_USER_STATUS;
 //    MY_DEBUG("Status: ", mData.user_status, "", "", "");
 }
 

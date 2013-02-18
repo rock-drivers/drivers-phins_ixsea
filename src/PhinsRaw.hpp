@@ -88,9 +88,9 @@ namespace phins_ixsea {
     };
 
     enum PhinsAlgoStatusL {
-        NAVIGATION_BIT = 0x00000001,
-        ALIGNMENT = 0x00000002,
-        FINE_ALIGNMENT = 0x00000004,
+        NAVIG = 0x00000001,
+        ALIGNE = 0x00000002,
+        FINE_ALIGNE = 0x00000004,
         DEAD_RECKONING =0x00000008,
         GPS_ALTITUDE =0x00000010,
         DEPTHSENSOR_ALTITUDE =0x00000020,
