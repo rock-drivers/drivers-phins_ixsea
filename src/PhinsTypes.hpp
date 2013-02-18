@@ -8,6 +8,7 @@
 #ifndef _PHINS_IXSEA_PHINSTYPES_HPP_
 #define _PHINS_IXSEA_PHINSTYPES_HPP_
 
+#include <base/time.h>
 /* DataTypes provided by the Phins
  *
  * Phins can provide the following data
@@ -103,6 +104,46 @@
  *
  */
 
+namespace phins_ixsea {
 
+    enum Protocol {
+         PhinsStandard,
+         HalliburtonSAS
+    };
+
+
+    enum NavigationMode {
+        UNKNOWN_MODE = 0,
+        COARSE_ALIGN_MODE,
+        FINE_ALIGN_MODE,
+        NAVIGATION_MODE,
+        DEGRADED_MODE,
+        FAILURE_MODE,
+    };
+
+    /** PhinsStatus is a synthesis of Status and Algostatus
+     *
+     */
+    struct PhinsStatus {
+        base::Time  time;
+        uint32_t    sensor_status;
+        uint32_t    input_status;
+        uint32_t    output_status;
+        uint32_t    system_status;
+        uint32_t    mode;
+
+    };
+
+    struct PhinsExtStatus {
+        base::Time  time;
+        uint32_t    status_lsb;
+        uint32_t    status_msb;
+        uint32_t    algo_status_lsb;
+        uint32_t    algo_status_msb;
+        uint32_t    user_status;
+    };
+
+
+}  // namespace phins_ixsea
 
 #endif /* _PHINS_IXSEA_PHINSTYPES_HPP_ */

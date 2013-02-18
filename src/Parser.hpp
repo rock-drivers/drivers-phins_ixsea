@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string>
+#include <phins_ixsea/PhinsTypes.hpp>
+#include <phins_ixsea/PhinsRaw.hpp>
 
 namespace phins_ixsea
 {
@@ -20,13 +23,9 @@ namespace phins_ixsea
      */
     class Parser
     {
+
+
     public:
-
-        enum Protocol {
-            PhinsStandard,
-            HalliburtonSAS
-        };
-
         Parser();
 
         static Parser* createParser(Protocol protocol);
@@ -36,18 +35,40 @@ namespace phins_ixsea
          */
         virtual int extractPacket (uint8_t const *buffer, size_t buffer_size) const = 0;
 
+        /**
+         * parse a data packet
+         * pure virtual, has to be implemented in the specific protocol parser
+         */
+        virtual void parse(uint8_t const *buffer, size_t size) = 0;
+
+        /**
+         * checks if actual data is available
+         * if true and reset is true, the flasg are reset
+         * \return true if all flags are set
+         * \return if true, reset the set flags
+         */
+        bool hasUpdate(uint32_t flags, bool reset = false);
+
+        bool hasAnyUpdate(uint32_t flags);
+
+        PhinsRawData    mData;
+        uint32_t        mUpdateFlags;
     };
 
 
     class NmeaParser : public Parser
     {
+
     public:
         NmeaParser();
         /** extracts a NMEA 183 sentence from the datastream
-         * each sentence strats with a '$' and end with "\r\n"
+         * each sentence starts with a '$' and end with "\r\n"
          * The sentence may contain a checksum
          */
         virtual int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
+
+    protected:
+
     };
 
 } /* namespace phins_ixsea */

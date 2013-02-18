@@ -13,10 +13,12 @@ namespace phins_ixsea
 {
 
 Parser::Parser()
+    : mData(),
+      mUpdateFlags(0)
 {
 }
 
-phins_ixsea::Parser* Parser::createParser(Protocol protocol)
+Parser* Parser::createParser(Protocol protocol)
 {
     switch (protocol) {
     case PhinsStandard:
@@ -28,6 +30,23 @@ phins_ixsea::Parser* Parser::createParser(Protocol protocol)
     }
     return 0;
 }
+
+bool Parser::hasUpdate(uint32_t flags, bool reset)
+{
+    if ((mUpdateFlags & flags) == flags) {
+        if (reset) {
+            mUpdateFlags &= ~flags;
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Parser::hasAnyUpdate(uint32_t flags)
+{
+    return mUpdateFlags & flags;
+}
+
 
 NmeaParser::NmeaParser()
     : Parser()
