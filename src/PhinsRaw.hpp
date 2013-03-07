@@ -29,7 +29,12 @@ namespace phins_ixsea {
         UPD_EXT_STATUS = 1536,
         UPD_USER_STATUS = 2048,
         UPD_STATUS = 3584,
-        UPD_TIME = 8192
+        UPD_OTHER_STATUS = 8192,
+        UPD_TIME = 16384,
+        UPD_DVL = 16384,
+        UPD_BODY_ROTATION_RATE = 0x00010000,
+        UPD_BODY_SPEED = 0x00020000
+
     };
 
     enum PhinsStatusL {
@@ -271,6 +276,21 @@ namespace phins_ixsea {
         double  stddev_spd_east;
         double  stddev_spd_up;
 
+        double  rotation_rate_vessel_xv1;
+        double  rotation_rate_vessel_xv2;
+        double  rotation_rate_vessel_xv3;
+
+        double  horizontal_speed_course;
+        double  spd_horizontal;
+        double  spd_vessel_xv1;
+        double  spd_vessel_xv2;
+        double  spd_vessel_xv3;
+
+        double  dvl_altitude;
+        double  dvl_misaligne_estimation;
+        double  dvl_scale_fcator_corr_estimation;
+
+        double  sound_speed;
 
         uint32_t    status_LSB;
         uint32_t    status_MSB;
@@ -278,6 +298,8 @@ namespace phins_ixsea {
         uint32_t    algo_status_MSB;
 
         uint32_t    user_status;
+
+        uint32_t    other_status;
 
         base::Time time;
 

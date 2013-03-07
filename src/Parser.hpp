@@ -68,6 +68,10 @@ namespace phins_ixsea
         virtual int extractPacket (uint8_t const *buffer, size_t buffer_size) const;
 
     protected:
+        /** convert degree, decimal minutes to decimal degrees
+         *
+         */
+        double ddm2dd(const double);
 
     };
 

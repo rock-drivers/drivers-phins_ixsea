@@ -67,7 +67,7 @@ int NmeaRecord::setRecord(std::string rec )
 }
 
 
-std::string NmeaRecord::checksum(std::string str)
+std::string NmeaRecord::checksum(std::string str) const
 {
 	uint8_t cs = 0;
 	std::string::iterator it = str.begin() + 1;
@@ -112,7 +112,7 @@ int NmeaRecord::size()
 	return mFields.size();
 }
 
-std::string NmeaRecord::toHex(uint64_t num, int len)
+std::string NmeaRecord::toHex(uint64_t num, int len) const
 {
     static const char* hex = "0123456789ABCDEF";
 
@@ -128,7 +128,7 @@ std::string NmeaRecord::toHex(uint64_t num, int len)
     return s;
 }
 
-std::string NmeaRecord::sentence(bool cs)
+std::string NmeaRecord::sentence(bool cs) const
 {
     if (!mFields.size())
         return std::string();

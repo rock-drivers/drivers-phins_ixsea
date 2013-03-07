@@ -26,7 +26,7 @@ namespace phins_ixsea{
         int setRecord(std::string rec);
 
         int size();
-        std::string checksum(std::string str);
+        std::string checksum(std::string str) const;
 
         std::string field(int i) const;
         std::string operator[](int i) const;
@@ -38,14 +38,14 @@ namespace phins_ixsea{
 
         std::string header() const;
 
-        std::string sentence(bool cs = true);
+        std::string sentence(bool cs = true) const;
 
 	private:
         bool mValid;
         std::vector<std::string> mFields;
 
         int clearRecord();
-        std::string toHex(uint64_t num, int len);
+        std::string toHex(uint64_t num, int len) const;
 
         // void setField(int i, int val);
         // void setField(int i, double val);

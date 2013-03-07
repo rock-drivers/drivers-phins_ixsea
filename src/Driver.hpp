@@ -17,6 +17,26 @@
 
 namespace phins_ixsea
 {
+    /** \brief Driver for the IXSEA inertial navigation system PHINS
+     * \detailed The PHINS provides position and attitude data in either the device frame or the worldframe
+     *
+     * So far two protocols are implemented
+     * 1. PhinsStandard provides the data related to the world frame
+     *  - Lat/Lon-Position
+     *  - UTM Position
+     *  - Altitude/Depth
+     *  - Speed (East/North)
+     *  - Deviations
+     *  - Status
+     *  - Sensor input
+     *
+     *  2. HalliburtonSAS provides the data related to the world frame as well as to the body frame
+     *   -
+     *
+     *
+     *
+     * There are no binary protocols with UTM position available
+     */
 	class Driver : public iodrivers_base::Driver
 	{
 	    std::vector<uint8_t> mBuffer;

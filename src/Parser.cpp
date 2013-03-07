@@ -72,5 +72,13 @@ int NmeaParser::extractPacket (uint8_t const *buffer, size_t buffer_size) const
     return -buffer_size;
 }
 
+double NmeaParser::ddm2dd(const double ddm)
+{
+    int deg = floor(fabs(ddm) / 100);
+    double res = (fabs(ddm) - deg * 100) / 60 + deg;
+    if (ddm < 0) return -res;
+    return res;
+}
+
 
 } /* namespace phins_ixsea */

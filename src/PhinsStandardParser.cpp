@@ -84,8 +84,8 @@ void PhinsStandardParser::parse(uint8_t const *buffer, size_t size)
 
 void PhinsStandardParser::parseAttitude(const NmeaRecord& nmea)
 {
-    mData.att_roll = strtod(nmea[2].c_str(), 0);
-    mData.att_pitch = strtod(nmea[3].c_str(), 0);
+    mData.att_roll = strtod(nmea[2].c_str(), 0) * M_PI / 180.0;
+    mData.att_pitch = strtod(nmea[3].c_str(), 0) * M_PI / 180.0;
     mUpdateFlags |= UPD_ATTITUDE;
 //    MY_DEBUG("Attitude: ", mData.att_roll, mData.att_pitch, "", "");
 }
@@ -131,9 +131,9 @@ void PhinsStandardParser::parseHeave(const NmeaRecord& nmea)
 
 void PhinsStandardParser::parseStddevHrp(const NmeaRecord& nmea)
 {
-    mData.stddev_att_heading = strtod(nmea[2].c_str(), 0);
-    mData.stddev_att_roll = strtod(nmea[3].c_str(), 0);
-    mData.stddev_att_pitch = strtod(nmea[4].c_str(), 0);
+    mData.stddev_att_heading = strtod(nmea[2].c_str(), 0) * M_PI / 180.0;
+    mData.stddev_att_roll = strtod(nmea[3].c_str(), 0) * M_PI / 180.0;
+    mData.stddev_att_pitch = strtod(nmea[4].c_str(), 0) * M_PI / 180.0;
     mUpdateFlags |= UPD_DEV_ATT;
 //    MY_DEBUG("Stddev Attitude: ", mData.stddev_att_heading, mData.stddev_att_roll, mData.stddev_att_pitch, "");
 
@@ -156,7 +156,7 @@ void PhinsStandardParser::parseStddevPos(const NmeaRecord& nmea)
 
 void PhinsStandardParser::parseHeading(const NmeaRecord& nmea)
 {
-    mData.att_heading = strtod(nmea[1].c_str(), 0);
+    mData.att_heading = strtod(nmea[1].c_str(), 0) * M_PI / 180.0;
     mUpdateFlags |= UPD_HEADING;
 //    MY_DEBUG("Heading: ", mData.att_heading, "", "", "" );
 }
@@ -216,8 +216,9 @@ void PhinsStandardParser::parseStatus(const NmeaRecord& nmea)
 
 void PhinsStandardParser::parseHighLevelStatus(const NmeaRecord& nmea)
 {
-// Phins Standard doesn't provide UserStatus. This is a bug in the documentation
-//    $HT_STS contains a proprietary statusword
+/* Phins Standard doesn't provide UserStatus. This is a bug in the documentation
+ * $HT_STS contains a proprietary statusword
+ */
 //    mData.user_status = strtoul(nmea[2].c_str(), 0, 16);
 //    mUpdateFlags |= UPD_USER_STATUS;
 //    MY_DEBUG("Status: ", mData.user_status, "", "", "");

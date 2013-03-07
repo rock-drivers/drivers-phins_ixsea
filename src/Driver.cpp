@@ -83,11 +83,20 @@ void Driver::updateSamples()
     if (mParser->hasUpdate(UPD_ATTITUDE, true)) {
         mUtmPose.time = time;
         mGeoPose.time = time;
-        mUtmPose.orientation = Eigen::AngleAxisd(mParser->mData.att_heading * M_PI / 180.0, -Eigen::Vector3d::UnitZ())
-                        * Eigen::AngleAxisd(mParser->mData.att_pitch * M_PI / 180.0, Eigen::Vector3d::UnitY())
-                        * Eigen::AngleAxisd(mParser->mData.att_roll * M_PI / 180.0, Eigen::Vector3d::UnitX());
+        mUtmPose.orientation = Eigen::AngleAxisd(mParser->mData.att_heading, -Eigen::Vector3d::UnitZ())
+                        * Eigen::AngleAxisd(mParser->mData.att_pitch, Eigen::Vector3d::UnitY())
+                        * Eigen::AngleAxisd(mParser->mData.att_roll, Eigen::Vector3d::UnitX());
         mGeoPose.orientation = mUtmPose.orientation;
         mUpdateFlags |= UPD_HPR;
+    }
+    if (mParser->hasUpdate(UPD_BODY_ROTATION_RATE, true)) {
+        mUtmPose.time = time;
+        mGeoPose.time = time;
+        mUtmPose.angular_velocity[0] = mParser->mData.rotation_rate_vessel_xv3; // yaw
+        mUtmPose.angular_velocity[1] = mParser->mData.rotation_rate_vessel_xv2; // pitch
+        mUtmPose.angular_velocity[2] = mParser->mData.rotation_rate_vessel_xv1; // roll
+        mGeoPose.angular_velocity = mUtmPose.angular_velocity;
+        mUpdateFlags |= UPD_BODY_ROTATION_RATE;
     }
     if (mParser->hasUpdate(UPD_USER_STATUS, true)) {
         uint32_t ust = mParser->mData.user_status;
