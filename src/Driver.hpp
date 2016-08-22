@@ -12,7 +12,7 @@
 #include <phins_ixsea/Parser.hpp>
 #include <phins_ixsea/PhinsTypes.hpp>
 #include <phins_ixsea/PhinsRaw.hpp>
-#include <base/samples/rigid_body_state.h>
+#include <base/samples/RigidBodyState.hpp>
 
 
 namespace phins_ixsea
