@@ -9,7 +9,7 @@
 #define _PHINS_IXSEA_PHINSRAW_HPP_
 
 #include <stdint.h>
-#include <base/time.h>
+#include <base/Time.hpp>
 
 namespace phins_ixsea {
 

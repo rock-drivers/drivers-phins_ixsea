@@ -8,7 +8,7 @@
 #ifndef _PHINS_IXSEA_PHINSTYPES_HPP_
 #define _PHINS_IXSEA_PHINSTYPES_HPP_
 
-#include <base/time.h>
+#include <base/Time.hpp>
 /* DataTypes provided by the Phins
  *
  * Phins can provide the following data
