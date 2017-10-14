@@ -8,6 +8,7 @@
 #include "HalliburtonSASParser.hpp"
 #include "NmeaRecord.hpp"
 #include <iostream>
+#include <math.h>
 
 using namespace phins_ixsea;
 using namespace std;

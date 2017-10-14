@@ -9,6 +9,7 @@
 #include "NmeaRecord.hpp"
 #include <iostream>
 #include <exception>
+#include <math.h>
 
 using namespace phins_ixsea;
 using namespace std;

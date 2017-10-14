@@ -27,6 +27,7 @@ namespace phins_ixsea
 
     public:
         Parser();
+        virtual ~Parser() {};
 
         static Parser* createParser(Protocol protocol);
 
